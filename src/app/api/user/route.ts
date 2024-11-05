@@ -21,6 +21,7 @@ export async function GET(req: NextRequest) {
   try {
     await verifyJWT(req);
   } catch (error) {
+    console.error('Error : Unauthorized: Invalid or missing token', error);
     return NextResponse.json({ error: 'Unauthorized: Invalid or missing token' }, { status: 401 });
   }
 
@@ -43,6 +44,7 @@ export async function PUT(req: NextRequest) {
   try {
     await verifyJWT(req);
   } catch (error) {
+    console.error('Error : Unauthorized: Invalid or missing token', error);
     return NextResponse.json({ error: 'Unauthorized: Invalid or missing token' }, { status: 401 });
   }
 
@@ -85,6 +87,7 @@ export async function DELETE(req: NextRequest) {
   try {
     await verifyJWT(req);
   } catch (error) {
+    console.error('Error : Unauthorized: Invalid or missing token', error);
     return NextResponse.json({ error: 'Unauthorized: Invalid or missing token' }, { status: 401 });
   }
 

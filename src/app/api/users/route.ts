@@ -6,15 +6,17 @@ const prisma = new PrismaClient();
 
 export async function GET(req: NextRequest) {
     try {
-        try {
-            await verifyJWT(req);
-        } catch (error) {
-            return NextResponse.json({ error: 'Unauthorized: Invalid or missing token' }, { status: 401 });
-        }
+        // Verify the JWT token
+        await verifyJWT(req);
+        
+        // Fetch users from the database
         const users = await prisma.user.findMany();
         return NextResponse.json(users, { status: 200 });
     } catch (error) {
         console.error('Error fetching users:', error);
+        if (error instanceof Error && error.message.includes('Unauthorized')) {
+            return NextResponse.json({ error: 'Unauthorized: Invalid or missing token' }, { status: 401 });
+        }
         return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });
     }
 }

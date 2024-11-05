@@ -13,7 +13,7 @@ function setCorsHeaders(res: NextResponse) {
 }
 
 // Handle OPTIONS requests (preflight CORS requests)
-export async function OPTIONS(req: NextRequest) {
+export async function OPTIONS() {
     const res = new NextResponse(null, { status: 200 });
     setCorsHeaders(res); // Set CORS headers for preflight
     return res;
@@ -51,6 +51,7 @@ export async function POST(req: NextRequest) {
             },
         });
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { password: _, ...userWithoutPassword } = user;
 
         // Prepare the response
@@ -59,7 +60,7 @@ export async function POST(req: NextRequest) {
         return res;
 
     } catch (error) {
-        console.error(error);
+        console.error('Error during login:', error);
         const res = NextResponse.json({ error: 'User creation failed' }, { status: 500 });
         setCorsHeaders(res); // Add CORS headers to error response
         return res;

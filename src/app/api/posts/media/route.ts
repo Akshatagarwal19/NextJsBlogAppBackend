@@ -3,7 +3,7 @@ import Post from '@/models/Post';
 import { connectToDatabase } from '@/lib/db';
 import fs from 'fs';
 import path from 'path';
-import { verifyJWT } from '@/middlewares/verifyJWT';
+// import { verifyJWT } from '@/middlewares/verifyJWT';
 
 export async function GET(req: NextRequest) {
     await connectToDatabase(); // Ensure the database is connected

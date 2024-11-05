@@ -3,22 +3,27 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
-// Middleware to verify JWT for general routes
-export async function verifyJWT(req: NextRequest) {
+interface AuthenticateRequest extends NextRequest {
+    user?: {
+        userId: string;
+        role: string;
+    };
+}
+export async function verifyJWT(req: AuthenticateRequest) {
     const authHeader = req.headers.get('authorization');
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return NextResponse.json({ error: 'Unauthorized: No token provided' }, { status: 401 });
+        throw new Error('Unauthorized: No token provided');
     }
 
     const token = authHeader.split(' ')[1];
 
     try {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        console.log('Decoded JWT:',decoded);
-        (req as any).user = decoded;
+        const decoded = jwt.verify(token, JWT_SECRET) as AuthenticateRequest['user'];
+        req.user = decoded; // Store user info in the request object
         return NextResponse.next();
     } catch (err) {
+        console.error('Error : Unauthorized: Invalid token', err);
         return NextResponse.json({ error: 'Unauthorized: Invalid token' }, { status: 401 });
     }
 }
@@ -41,10 +46,10 @@ export const config = {
 };
 
 // Admin-specific verification
-export async function verifyAdmin(req: NextRequest) {
-    const user = (req as any).user;
+export async function verifyAdmin(req: AuthenticateRequest) {
+    const user = req.user;
 
-    if (user.role !== 'admin') {
+    if (user?.role !== 'admin') {
         return NextResponse.json({ error: 'Forbidden: Admin access only' }, { status: 403 });
     }
 
