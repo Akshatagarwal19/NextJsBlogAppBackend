@@ -32,7 +32,7 @@ interface AuthenticatedRequest extends NextRequest {
 }
 
 const corsHeaders = {
-    'Access-Control-Allow-Origin': 'http://localhost:3001',
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Authorization, Content-Type',
     'Access-Control-Allow-Credentials': 'true',

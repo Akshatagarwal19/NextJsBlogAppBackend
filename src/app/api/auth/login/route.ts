@@ -8,7 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
 
 function setCorsHeaders(res: NextResponse) {
-    res.headers.set('Access-Control-Allow-Origin', 'http://localhost:3001'); 
+    res.headers.set('Access-Control-Allow-Origin', '*'); 
     res.headers.set('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, DELETE'); 
     res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization'); 
     res.headers.set('Access-Control-Allow-Credentials', 'true'); 

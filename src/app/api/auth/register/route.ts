@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 
 function setCorsHeaders(res: NextResponse) {
-    res.headers.set('Access-Control-Allow-Origin', 'http://localhost:3001'); 
+    res.headers.set('Access-Control-Allow-Origin', '*'); 
     res.headers.set('Access-Control-Allow-Methods', 'OPTIONS, POST'); 
     res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization'); 
     res.headers.set('Access-Control-Allow-Credentials', 'true'); 
