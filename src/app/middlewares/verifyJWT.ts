@@ -20,7 +20,7 @@ export async function verifyJWT(req: AuthenticateRequest) {
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET) as AuthenticateRequest['user'];
-        req.user = decoded; // Store user info in the request object
+        req.user = decoded; 
         return NextResponse.next();
     } catch (err) {
         console.error('Error : Unauthorized: Invalid token', err);
@@ -28,11 +28,11 @@ export async function verifyJWT(req: AuthenticateRequest) {
     }
 }
 
-// Main middleware function
+
 export async function middleware(req: NextRequest) {
     const path = req.nextUrl.pathname;
 
-    // Skip middleware for login and register routes
+    
     if (path === '/api/auth/login' || path === '/api/auth/register') {
         return NextResponse.next();
     }
@@ -40,12 +40,12 @@ export async function middleware(req: NextRequest) {
     return verifyJWT(req);
 }
 
-// Configuration for middleware matcher
+
 export const config = {
-    matcher: ['/api/:path*'], // Apply to all /api routes except excluded ones
+    matcher: ['/api/:path*'], 
 };
 
-// Admin-specific verification
+
 export async function verifyAdmin(req: AuthenticateRequest) {
     const user = req.user;
 
@@ -56,13 +56,13 @@ export async function verifyAdmin(req: AuthenticateRequest) {
     return NextResponse.next();
 }
 
-// Middleware for admin routes
+
 export async function adminMiddleware(req: NextRequest) {
-    await verifyJWT(req); // First, verify JWT
-    return verifyAdmin(req); // Then check if the user is an admin
+    await verifyJWT(req); 
+    return verifyAdmin(req); 
 }
 
-// Configuration for admin middleware matcher
+
 export const adminConfig = {
-    matcher: ['/api/admin/:path*'], // Apply only to admin routes
+    matcher: ['/api/admin/:path*'], 
 };

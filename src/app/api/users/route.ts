@@ -6,10 +6,8 @@ const prisma = new PrismaClient();
 
 export async function GET(req: NextRequest) {
     try {
-        // Verify the JWT token
         await verifyJWT(req);
         
-        // Fetch users from the database
         const users = await prisma.user.findMany();
         return NextResponse.json(users, { status: 200 });
     } catch (error) {

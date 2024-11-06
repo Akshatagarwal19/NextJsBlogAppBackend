@@ -6,7 +6,7 @@ import path from 'path';
 // import { verifyJWT } from '@/middlewares/verifyJWT';
 
 export async function GET(req: NextRequest) {
-    await connectToDatabase(); // Ensure the database is connected
+    await connectToDatabase(); 
 
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
@@ -22,12 +22,11 @@ export async function GET(req: NextRequest) {
         }
 
         const mediaPath = post.mediaPath;
-        const filePath = path.resolve(mediaPath);  // This is for reading the file on the server
+        const filePath = path.resolve(mediaPath);  
         const stat = fs.statSync(filePath);
         const ext = path.extname(mediaPath).toLowerCase();
-        let contentType = 'application/octet-stream'; // Default to binary stream
-
-        // Set content type based on file extension
+        let contentType = 'application/octet-stream'; 
+        
         if (ext === '.mp4') contentType = 'video/mp4';
         else if (ext === '.jpg' || ext === '.jpeg') contentType = 'image/jpeg';
         else if (ext === '.png') contentType = 'image/png';
@@ -59,11 +58,11 @@ export async function GET(req: NextRequest) {
                         controller.error(err);
                     });
                     readStream.on('pause', () => {
-                        // Optionally handle pause event
+                        
                     });
                     
                     readStream.on('resume', () => {
-                        // If there is space in the internal queue, resume the stream
+                        
                         if (controller.desiredSize !== null && controller.desiredSize > 0) {
                             readStream.resume();
                         }
@@ -77,11 +76,11 @@ export async function GET(req: NextRequest) {
                     'Accept-Ranges': 'bytes',
                     'Content-Length': contentLength.toString(),
                     'Content-Type': contentType,
-                    'Access-Control-Allow-Origin': '*', // Adjust this according to your needs
+                    'Access-Control-Allow-Origin': '*', 
                     'Access-Control-Allow-Methods': 'GET',
                     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
                 },
-                status: 206, // Partial Content
+                status: 206, 
             });
         } else {
             const readStream = fs.createReadStream(filePath);

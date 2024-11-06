@@ -4,7 +4,6 @@ import { verifyJWT } from '@/middlewares/verifyJWT';
 
 const prisma = new PrismaClient();
 
-// Handling Prisma disconnection for better connection management in long-running processes
 async function prismaDisconnect() {
   try {
     await prisma.$disconnect();
@@ -60,7 +59,7 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: 'User not found' }, { status: 404 });
   }
 
-  const { name, email, role } = await req.json(); // Assuming you are sending JSON data
+  const { name, email, role } = await req.json();
 
   const updateData = {
     name: name ? String(name) : existingUser.name,
@@ -79,7 +78,7 @@ export async function PUT(req: NextRequest) {
     console.error('Error updating user:', error);
     return NextResponse.json({ error: 'Failed to update user' }, { status: 500 });
   } finally {
-    await prismaDisconnect(); // Ensures Prisma disconnection after handling the request
+    await prismaDisconnect();
   }
 }
 
